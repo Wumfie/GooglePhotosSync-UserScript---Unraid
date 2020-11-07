@@ -1,0 +1,2 @@
+This script runs the gphotos-sync command on all of your Google Photos Sync dockers. Works if you have multiple containers or just one. Make sure to edit the script file if you have any issues. 
+For more info please see: https://tomeldon.com/googlephotossync

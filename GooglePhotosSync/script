@@ -1,0 +1,26 @@
+#!/bin/bash
+echo "Running the GooglePhotosSync script made by TomEldon (www.tomeldon.com)..."
+
+#If you would like to manually specify containers to sync, please fill the array with your docker container ID's seperated by spaces and set "autoFindContainers" to false.
+autoFindContainers=true
+googlePhotosDockers=( containerID1 containerID2 )
+
+#Automatically Find Containers
+if [ $autoFindContainers = true ]
+then
+	echo "Auto-Finding Docker Containers"
+	googlePhotosDockers=( $(docker container ls -a --filter ancestor=rix1337/docker-gphotos-sync | egrep rix1337/docker-gphotos-sync | tr -s ' ' | cut -d ' ' -f 1) ) 
+fi
+
+#Run Commands through containers in array
+for i in "${googlePhotosDockers[@]}"
+do
+	echo ""
+	echo "―――――――――――――――Running sync for container: $i―――――――――――――――"
+	echo -n "With Name: "
+	docker inspect --format "{{.Name}}" $i
+	docker exec -i $i gphotos-sync /storage
+	echo "――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――"
+done
+
+exit
